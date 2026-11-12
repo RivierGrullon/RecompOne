@@ -26,4 +26,7 @@ public static class DisplayOptions
 
     public static readonly Option<bool> Dithering = Options.Bool("display.dithering", true);
     public static readonly Option<bool> TrueColor = Options.Bool("display.true_color");
+
+    public static readonly Option<bool> OverlayEnabled = Options.Bool("display.overlay.enabled");
+    public static readonly Option<string> OverlayPath = Options.String("display.overlay.path");
 }

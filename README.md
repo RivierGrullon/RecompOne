@@ -45,6 +45,28 @@ RecompOne is a .NET project, You'll need the [.NET SDK 10](https://dotnet.micros
 
 Creating a port for a game is an involved process, but you can find instructions on how to get started on [our wiki](https://github.com/BlackLabelHQ/RecompOne/wiki/How-to-recompile-a-game%3F)
 
+## Custom output overlays
+
+The runtime's **System > Settings > Display > Custom overlay** section lets
+players choose a PNG or JPEG to decorate the space around the game. Artwork is
+centered behind the game, preserves its aspect ratio, and follows the output
+panel's size. PNG alpha is supported. The game remains unobscured, including
+when the artwork has an opaque center.
+
+Selecting an image enables it immediately. **Enable overlay** hides the artwork
+without forgetting the path; **Reload image** retries loading the same file
+after it has been edited or restored; **Clear image** removes the selection.
+The path and enabled state are saved as `display.overlay.path` and
+`display.overlay.enabled` in the `options` section of `settings.json`.
+Overlays are disabled by default. Invalid or missing files show an error in
+Display settings without interrupting the game.
+
+## Tests
+
+Run `dotnet test RecompOne.sln -c Release`. The overlay tests decode real PNG
+and JPEG fixtures and inspect ImGui draw data without requiring a GPU, a game
+disc, or generated game code.
+
 ## Contributing
 
 Contributions are welcome. Bug reports, feature suggestions, and code are all appreciated.

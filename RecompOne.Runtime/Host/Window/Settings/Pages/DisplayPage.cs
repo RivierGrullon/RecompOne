@@ -13,6 +13,7 @@ internal static class DisplayPage
         SettingsPages.Page(SettingsPages.Display, "settings.display", 5)
             .Add("window", DrawWindow, 0)
             .Add("renderer", DrawRenderer, 100)
+            .Add("overlay", DrawOverlay, 150, "settings.display.overlay")
             .Add("frame_rate", DrawFrameRate, 200, "settings.display.frame_rate",
                 static () => Features.FrameInterpolation);
     }
@@ -60,6 +61,38 @@ internal static class DisplayPage
         {
             SettingsWidgets.Toggle(DisplayOptions.Dithering, "settings.display.dithering", "settings.display.dithering_hint");
         }
+    }
+
+    private static void DrawOverlay()
+    {
+        SettingsWidgets.Toggle(DisplayOptions.OverlayEnabled, "settings.display.overlay_enabled");
+
+        var path = DisplayOptions.OverlayPath.Value;
+        if (ImGui.InputText(Localization.T("settings.display.overlay_image"), ref path, 4096,
+                ImGuiInputTextFlags.EnterReturnsTrue))
+            SelectOverlay(path.Trim());
+
+        if (ImGui.Button(Localization.T("common.browse")))
+            ToolUi.PickFile(Localization.T("settings.display.overlay_image"), "png,jpg,jpeg", SelectOverlay);
+
+        ImGui.SameLine();
+        if (ImGui.Button(Localization.T("settings.display.overlay_reload")))
+            PanelManager.Get<OutputPanel>()?.ReloadOverlay();
+
+        ImGui.SameLine();
+        if (ImGui.Button(Localization.T("settings.display.overlay_clear")))
+            SelectOverlay("");
+
+        SettingsWidgets.Note("settings.display.overlay_hint");
+        if (PanelManager.Get<OutputPanel>()?.Overlay.Error is { Length: > 0 } error)
+            ImGuiUtils.TextWrappedColored(ImGuiUtils.Red, Localization.T("settings.display.overlay_error", error));
+    }
+
+    private static void SelectOverlay(string path)
+    {
+        PanelManager.Get<OutputPanel>()?.ReloadOverlay();
+        DisplayOptions.OverlayPath.Value = path;
+        DisplayOptions.OverlayEnabled.Value = !string.IsNullOrWhiteSpace(path);
     }
 
     private static void DrawFrameRate()

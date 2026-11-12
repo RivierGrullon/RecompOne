@@ -751,6 +751,62 @@
       "zh-CN": "使用中: {0}",
       "fr-FR": "Actuellement: {0}"
     },
+    "settings.display.overlay": {
+      "en": "Custom overlay",
+      "pt-BR": "Moldura personalizada",
+      "es-419": "Marco personalizado",
+      "ja-JP": "カスタムオーバーレイ",
+      "zh-CN": "自定义装饰边框",
+      "fr-FR": "Cadre personnalisé"
+    },
+    "settings.display.overlay_enabled": {
+      "en": "Enable overlay",
+      "pt-BR": "Ativar moldura",
+      "es-419": "Activar marco",
+      "ja-JP": "オーバーレイを有効にする",
+      "zh-CN": "启用装饰边框",
+      "fr-FR": "Activer le cadre"
+    },
+    "settings.display.overlay_image": {
+      "en": "Overlay image",
+      "pt-BR": "Imagem da moldura",
+      "es-419": "Imagen del marco",
+      "ja-JP": "オーバーレイ画像",
+      "zh-CN": "边框图片",
+      "fr-FR": "Image du cadre"
+    },
+    "settings.display.overlay_reload": {
+      "en": "Reload image",
+      "pt-BR": "Recarregar imagem",
+      "es-419": "Recargar imagen",
+      "ja-JP": "画像を再読み込み",
+      "zh-CN": "重新加载图片",
+      "fr-FR": "Recharger l'image"
+    },
+    "settings.display.overlay_clear": {
+      "en": "Clear image",
+      "pt-BR": "Remover imagem",
+      "es-419": "Quitar imagen",
+      "ja-JP": "画像を解除",
+      "zh-CN": "移除图片",
+      "fr-FR": "Retirer l'image"
+    },
+    "settings.display.overlay_hint": {
+      "en": "Choose a PNG or JPEG. The image is centered behind the game without changing its aspect ratio. Use Reload image after editing the file.",
+      "pt-BR": "Escolha um PNG ou JPEG. A imagem fica centralizada atrás do jogo, sem alterar sua proporção. Use Recarregar imagem após editar o arquivo.",
+      "es-419": "Elige un PNG o JPEG. La imagen se centra detrás del juego sin cambiar su relación de aspecto. Usa Recargar imagen después de editar el archivo.",
+      "ja-JP": "PNGまたはJPEGを選択します。画像は縦横比を維持してゲームの背面中央に表示されます。ファイルを編集した後は画像を再読み込みしてください。",
+      "zh-CN": "选择PNG或JPEG图片。图片将保持宽高比，居中显示在游戏画面后方。编辑文件后请重新加载图片。",
+      "fr-FR": "Choisissez un PNG ou JPEG. L'image est centrée derrière le jeu en conservant ses proportions. Rechargez l'image après avoir modifié le fichier."
+    },
+    "settings.display.overlay_error": {
+      "en": "Could not load overlay: {0}",
+      "pt-BR": "Não foi possível carregar a moldura: {0}",
+      "es-419": "No se pudo cargar el marco: {0}",
+      "ja-JP": "オーバーレイを読み込めませんでした: {0}",
+      "zh-CN": "无法加载装饰边框：{0}",
+      "fr-FR": "Impossible de charger le cadre : {0}"
+    },
     "settings.display.frame_rate": {
       "en": "Frame rate",
       "pt-BR": "Taxa de quadros",

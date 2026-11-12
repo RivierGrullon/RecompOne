@@ -489,7 +489,7 @@ public static class HostWindow
         _imgui = new ImGuiController(_gl, _window, input, ConfigureImGui);
         Interp.InterpOptions.TargetFps.Changed += _ => ApplySwapInterval();
 
-        PanelManager.Register(new OutputPanel());
+        PanelManager.Register(new OutputPanel(new OutputOverlay(UploadTexture, id => _gl?.DeleteTexture(id))));
         PanelManager.Register(new VramViewerPanel());
         PanelManager.Register(new TextureInspectorPanel());
         PanelManager.Register(new CpuStatePanel());
@@ -753,6 +753,7 @@ public static class HostWindow
         _closed = true;
         InterfaceLayout.Save(PanelManager.Panels);
         Settings.SaveIfDirty();
+        PanelManager.Get<OutputPanel>()?.Dispose();
         PanelManager.Shutdown();
         PopupManager.Shutdown();
         _glBackend?.Dispose();

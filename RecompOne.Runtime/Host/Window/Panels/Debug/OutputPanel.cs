@@ -1,10 +1,19 @@
 using System.Numerics;
 using ImGuiNET;
+using RecompOne.Runtime.Config;
 
 namespace RecompOne.Runtime.Host.Window;
 
-internal sealed class OutputPanel : IPanel
+internal sealed class OutputPanel(OutputOverlay overlay) : IPanel, IDisposable
 {
+    private bool _reloadOverlay;
+
+    public OutputOverlay Overlay => overlay;
+
+    // Settings are drawn after this panel. Keep its queued texture alive until
+    // the next frame, when no draw commands can still reference it.
+    public void ReloadOverlay() => _reloadOverlay = true;
+
     public string Name => "Output";
     public string TitleKey => "panel.output";
 
@@ -28,7 +37,6 @@ internal sealed class OutputPanel : IPanel
         (_texId, _texW, _texH, _aspect) = (id, w, h, aspect > 0f ? aspect : 4f / 3f);
     }
 
-    //idea: in the future make this be able to draw images so you can have ornamented backgrounds
     public void Draw()
     {
         ImGui.SetNextWindowSize(new Vector2(640, 480), ImGuiCond.FirstUseEver);
@@ -36,6 +44,12 @@ internal sealed class OutputPanel : IPanel
 
         var visible = ImGui.Begin(this.Title());
         IsDocked = ImGui.IsWindowDocked();
+        if (_reloadOverlay)
+        {
+            overlay.Clear();
+            _reloadOverlay = false;
+        }
+        var artwork = overlay.Get(DisplayOptions.OverlayPath, DisplayOptions.OverlayEnabled);
 
         if (!visible)
         {
@@ -44,9 +58,20 @@ internal sealed class OutputPanel : IPanel
             return;
         }
 
-        if (_texId != 0 && _texW > 0 && _texH > 0)
+        var avail = ImGui.GetContentRegionAvail();
+        if (artwork.Tex != 0 && avail.X > 0f && avail.Y > 0f)
         {
-            var avail = ImGui.GetContentRegionAvail();
+            var origin = ImGui.GetCursorScreenPos();
+            var size = FitAspect(new Vector2(artwork.W, artwork.H), avail);
+            var min = origin + (avail - size) * 0.5f;
+            var draw = ImGui.GetWindowDrawList();
+            draw.PushClipRect(origin, origin + avail, true);
+            draw.AddImage((nint)artwork.Tex, min, min + size);
+            draw.PopClipRect();
+        }
+
+        if (_texId != 0 && _texW > 0 && _texH > 0 && avail.X > 0f && avail.Y > 0f)
+        {
             var imageSize = FitAspect(new Vector2(_aspect, 1f), avail);
             var scale = ImGui.GetIO().DisplayFramebufferScale;
             ViewWidth = (int)MathF.Round(imageSize.X * scale.X);
@@ -61,6 +86,8 @@ internal sealed class OutputPanel : IPanel
         ImGui.End();
         ImGui.PopStyleColor();
     }
+
+    public void Dispose() => overlay.Dispose();
 
     private static Vector2 FitAspect(Vector2 src, Vector2 dst)
     {
